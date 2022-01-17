@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block contents %}
+    {% if user.is_authenticated %}
+        <h1 class="text-center">계정등록</h1>
+        <div class="alert alert-danger" role="alert">
+            <h3>계정등록 유의사항</h3>
+            <ol class="fs-5">
+                <li>AWS 계정 등록은 사전준비일에 시행됩니다.</li>
+                <li>반드시 먼저 비밀번호를 자신이 쓰던 비밀번호가 아닌 쉬운 임의의 비밀번호로 변경하십시오.</li>
+                <li>비밀번호 변경 후 반드시 로그아웃후 다시 로그인해 잘 접속되는지 확인합니다.</li>
+                <li>MFA는 반드시 해제하십시오.</li>
+                <li>대회때 사용할 리전의 리소스가 모두 삭제됩니다.</li>
+                <li>계정 초기화 중 심사위원이 임의로 IAM User를 삭제할 수 있습니다. (부정행위 방지)</li>
+                <li>계정 초기화 중 심사위원이 임의로 Root 계정의 Access Key를 삭제할 수 있습니다. (부정행위 방지)</li>
+                <li>대회때 수행할 계정은 선수들 계정 중 랜덤으로 부여됩니다.</li>
+                <li>계정에 올바른 결제 정보가 적용되어 있는지 확인하십시오. (대회 중에는 비용이 과금되니, 이 점 반드시 참고바랍니다.)</li>
+            </ol>
+        </div>
+        {% if open_time < 0 or email or password %}
+            <div class="row mb-3">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail" value="{{ email }}" disabled>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">비밀번호</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputPassword" value="{{ password }}" disabled>
+                    </div>
+                </div>
+        {% else %}
+            <form action="{% url 'aws' %}" method="POST">
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail" name="email" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">비밀번호</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputPassword" name="password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary float-end">계정등록</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            로그인해야 사용할 수 있는 기능입니다.
+        </div>
+    {% endif %}
+{% endblock %}
