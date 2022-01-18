@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 
 def index(request):
@@ -7,3 +7,7 @@ def index(request):
 
 def problem(request):
     return render(request, 'problem.html')
+
+
+def health(request):
+    return HttpResponse(request, status=200)
